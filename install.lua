@@ -18,13 +18,12 @@ local files = {
   "core/print.lua",
   "core/super.lua",
   "games/kimith.lua",
-  "net/config.txt",
-  "net/read_me_to_program_the_web.txt",
+  "net/site_data/config.txt",
+  "net/site_data/read_me_to_program_the_web.txt",
   "net/modules/chat_module.lua",
   "net/share/chat.lua",
   "net/share/tower.lua"
 }
-
 local dirs = {
   "net/cookies",
   "net/site_data/tower",
