@@ -1,0 +1,14 @@
+user_files
+*rom
+net/site_data
+net/cookies
+net/config.txt
+net/history.txt
+net/bookmakrks.txt
+net/share
+songs
+meta
+imagecopy.lua
+imigecopyconfig.text
+account.txt
+core/.cmd_history.text

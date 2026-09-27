@@ -1,0 +1,10 @@
+{
+  general = {
+    password = "",
+    messages = {},
+  },
+  gg = {
+    password = "y",
+    messages = {},
+  },
+}

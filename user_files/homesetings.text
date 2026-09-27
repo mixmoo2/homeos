@@ -1,0 +1,22 @@
+--this file is the config for startup
+comModem=16 default 16
+loadingScreen=gray default gray
+homeColor=magenta default magenta
+homeTextColor=white default white
+taskbarColor=gray default gray
+dialogBackgroundColor=black default black
+dialogTextColor=white defult white
+historyPointerColor=yellow defult yellow
+pointerColor=yellow defult yellow
+
+printApp_x=1 d
+printApp_y=6 d
+super_x=1 d
+super_y=3 d
+musicApp_x=1 d
+musicApp_y=9 d
+
+doomApp_x=1 d
+doomApp_y=7 d
+image_x=12.5 d
+image_y=3 d
