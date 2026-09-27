@@ -1,4 +1,4 @@
-local repo = "https://raw.githubusercontent.com/mixmoo2/homeos/main/"
+local repo = "https://raw.githubusercontent.com/YOUR_USERNAME/HomeOS/main/"
 
 local files = {
   "startup.lua",
