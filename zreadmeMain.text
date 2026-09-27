@@ -1,0 +1,115 @@
+This is a home "OS" by mix.moo2.
+
+I made this in Minecraft during a blind,
+hate-fueled rage directed at Lua.
+I fucking hate Lua so much,
+and I don't even have a good
+reason for it.
+
+You can do whatever you want with this
+code except sell it
+... but good luck reading it anyway.
+===============================================================================
+                   HOMEOS DEVELOPER & SYSTEM MANUAL
+===============================================================================
+
+-------------------------------------------------------------------------------
+1. FILE SYSTEM SPECIFICATION
+-------------------------------------------------------------------------------
+/
+├── startup.lua                  -- Boot loader & authentication gatekeeper
+├── core/                        -- Operating system core applications & utilities
+│   ├── home.lua                 -- Main desktop environment & terminal multiplexer
+│   ├── ServerHost.lua           -- Rednet Web Server daemon
+│   ├── WebViewer.lua            -- Rednet Web Client browser
+│   ├── super.lua                -- Text/Code editor module
+│   ├── bfg.lua                  -- File manager application
+│   ├── calculator.lua           -- Programmable graphing calculator
+│   ├── imagecopy.lua            -- Configurable file duplication tool
+│   ├── play.lua                 -- NBS audio playback engine
+│   ├── nbsTunes.lua             -- NBS sound library handler
+│   ├── print.lua                -- Printing utility module
+│   ├── betterblittle.lua        -- Graphics rendering library
+│   └── tree.lua                 -- Directory mapping utility
+├── games/                       -- Executable game scripts (e.g., kimith.lua)
+├── songs/                       -- .nbs audio files for play.lua
+├── meta/                        -- Associated metadata for media assets
+├── user_files/                  -- User configuration files & local data storage
+│   ├── account.txt              -- Authenticated credentials (username & hash)
+│   ├── homesetings.text         -- Desktop layout, colors, and button registry
+│   ├── imigecopyconfig.text     -- Blacklist directory list for imagecopy.lua
+│   ├── .cmd_history             -- Terminal command history log
+│   └── calcprograms/            -- Custom Lua scripts for graphing calculator
+└── net/                         -- Network framework & web infrastructure
+    ├── config.txt               -- WebViewer system configurations
+    ├── history.txt              -- Web browser access history log
+    ├── cookies/                 -- Session storage for web applications
+    ├── share/                   -- Hosted frontend site UI scripts
+    │   ├── tower.lua            -- Default web portal interface
+    │   ├── chat.lua             -- Chat webapp UI script
+    │   └── host_info.txt        -- Host machine identity manifest
+    ├── modules/                 -- Hosted backend modules (server logic & CLI)
+    │   └── chat_module.lua      -- Backend Rednet handlers & server commands
+    └── site_data/               -- Server-side persistent storage for site apps
+        ├── chat_rooms.txt       -- Serialized server data for chat application
+        └── tower/               -- Data assets for tower site
+
+-------------------------------------------------------------------------------
+2. AUTHENTICATION & BOOT ARCHITECTURE
+-------------------------------------------------------------------------------
+- startup.lua validates credentials before executing the core desktop environment[cite: 3].
+- Password Hashing Algorithm:
+  Passwords are processed using a DJB2 bitwise hash function[cite: 3]:
+
+  hash = 5381
+  for each byte in password:
+    hash = bit32.band(bit32.lshift(hash, 5) + hash + byte, 0xFFFFFFFF)
+  return string.format("%08x", hash)
+
+- User Credentials Format (`user_files/account.txt`)[cite: 3]:
+  Line 1: <username>[cite: 3]
+  Line 2: <hex_hashed_password>[cite: 3]
+
+-------------------------------------------------------------------------------
+3. HOMESETINGS CONFIGURATION FORMAT
+-------------------------------------------------------------------------------
+File location: `/user_files/homesetings.text`[cite: 4]
+Parameters are stored as space-delimited string key-value pairs with trailing "d" markers[cite: 4]:
+
+Key Examples:
+- `loadingScreen=gray def`[cite: 4]
+- `homeColor=magenta de`[cite: 4]
+- `taskbarColor=gray d`[cite: 4]
+- `pointerColor=yellow de`[cite: 4]
+- `comModem=1 d`[cite: 4]
+- `super_x=2 d` / `super_y=2 d` (Saved app positioning)[cite: 4]
+
+Custom Button Entries:
+Format: `btn_<id>={label="<label>",bg=<color_enum>,path="<path>",x=<x>,y=<y>} d`[cite: 4]
+
+-------------------------------------------------------------------------------
+4. WEB OS FRAMEWORK DEVELOPMENT (`net/`)
+-------------------------------------------------------------------------------
+The HomeOS mesh web infrastructure separates frontend display logic from backend
+server routing.
+
+A. Frontend Site Scripts (`net/share/<appname>.lua`)
+   - Served by `ServerHost.lua` over Rednet (protocol "homeos_mesh").
+   - Downloaded and executed locally by `WebViewer.lua`.
+   - Accesses screen dimensions via local window canvas limits.
+   - Has access to the injected global `net` table for browser navigation.
+
+B. Backend Server Modules (`net/modules/<appname>_module.lua`)
+   - Loaded into memory by `ServerHost.lua` when the corresponding site in
+     `net/share/` is marked active.
+   - Modules receive the `serverAPI` object as varargs (`...`).
+   - Registration functions available in modules:
+     1) `api.registerPacketHandler(packetType, function(senderID, packet))`
+        Processes incoming Rednet packets over protocol "homeos_mesh".
+     2) `api.registerCommand(cmdName, desc, usage, function(args))`
+        Exposes backend CLI management commands directly into the ServerHost
+        terminal interface.
+
+C. Persistent Database Storage (`net/site_data/<appname>/`)
+   - Backend modules must read/write persistent application state inside
+     `net/site_data/` to ensure isolated storage.

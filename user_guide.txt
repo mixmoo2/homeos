@@ -1,0 +1,112 @@
+===============================================================================
+                            HOMEOS USER GUIDE
+===============================================================================
+
+-------------------------------------------------------------------------------
+1. BOOTING & AUTHENTICATION
+-------------------------------------------------------------------------------
+- Startup Sequence:
+  On system boot, startup.lua handles user authentication.
+
+- Account Creation & Login:
+  - If no account exists at user_files/account.txt, startup.lua prompts to:
+    1) Create an account with a username and password.
+    2) Bypass login and start a Guest session.
+  - User passwords are automatically encrypted using a DJB2 hashing algorithm
+    prior to storage.
+  - Upon successful login, the system passes the authenticated username to the
+    HomeOS desktop environment (core/home.lua).
+
+-------------------------------------------------------------------------------
+2. DESKTOP INTERFACE OVERVIEW
+-------------------------------------------------------------------------------
+HomeOS features a split-screen desktop environment:
+
+- Left Canvas (Desktop UI):
+  - Top Bar: Displays system label and online/network status.
+  - Taskbar (Bottom Row):
+    - [p]: Emergency exit / program termination.
+    - [setings]: Opens user_files/homesetings.text in the Super Editor.
+    - [bfg]: Launches the Big File Guy file manager (core/bfg.lua).
+    - Clock Display: Shows local system time on the bottom right.
+  - Application Icons: Draggable buttons representing installed applications.
+    - Left-Click: Launches the application in a new window/tab.
+    - Left-Click + Drag: Repositions the button on the desktop grid.
+    - Right-Click on Icon: Opens context menu to change label, color, or delete.
+    - Right-Click on Desktop: Opens context menu to add a new button or change
+      background color.
+
+- Right Canvas (Interactive Terminal):
+  - Click anywhere inside the terminal window to focus keyboard input.
+  - Supports command execution, history navigation (Up/Down arrows), directory
+    autocompletion (Tab key), and horizontal line scrolling (Left/Right arrows).
+
+-------------------------------------------------------------------------------
+3. BUILT-IN APPLICATIONS
+-------------------------------------------------------------------------------
+- Super Editor (core/super.lua):
+  Full-featured text and source code editor.
+
+- Big File Guy / BFG (core/bfg.lua):
+  Graphical file manager for browsing directories, moving, and deleting files.
+
+- Calculator (core/calculator.lua):
+  Programmable calculator capable of running graphing scripts located in
+  user_files/calcprograms/.
+
+- Image Copy (core/imagecopy.lua):
+  File backup and migration utility. Ignores files/folders specified in the
+  blacklist file at user_files/imigecopyconfig.text.
+
+- Music & Audio (core/play.lua, core/nbsTunes.lua):
+  Audio engine designed to play .nbs music files located in songs/.
+
+- Web Viewer (core/WebViewer.lua):
+  Rednet web browser using configuration settings defined in net/config.txt.
+
+-------------------------------------------------------------------------------
+4. TERMINAL COMMAND REFERENCE
+-------------------------------------------------------------------------------
+- File Navigation & Operations:
+  - ls [dir]           : List directory contents.
+  - cd <dir>           : Change current working directory.
+  - pwd                : Display current working directory path.
+  - cat <file>         : Print file contents to terminal.
+  - touch <file>       : Create an empty file.
+  - mkdir <folder>     : Create a new directory.
+  - rm / delete <path> : Remove a file or directory.
+  - cp <src> <dest>    : Copy file or folder.
+  - mv <src> <dest>    : Move or rename file or folder.
+  - size <path>        : Calculate total byte size of a file or folder.
+  - df                 : Display available storage disk space.
+  - tree [folder]      : Render visual folder hierarchy tree.
+  - find <pattern>     : Search for files recursively by name.
+  - grep <text> <file> : Search for matching text inside a file.
+
+- System & Environment:
+  - whoami             : Display active user session label.
+  - passwd <old> <new> : Change system login password.
+  - label <name>       : Set computer network label.
+  - time               : Display formatted local time.
+  - ping               : Network test (returns "pong!").
+  - alias [name=cmd]   : Set or list command shortcuts.
+  - export [VAR=VAL]   : Set or list environment variables.
+  - echo <text>        : Print text or variable expansion (e.g. echo $USER).
+  - clear / cls        : Clear terminal display history.
+  - clearhist          : Clear command history log file (.cmd_history).
+  - refresh            : Reload desktop layout, custom buttons, and env vars.
+  - reboot             : Restart the system.
+
+- Desktop Icon Management:
+  - addbtn <id> <label> <path> [color] : Add custom application icon.
+  - rmbtn <id>                         : Remove desktop icon by ID.
+  - editbtn <id> <label|color> <val>   : Update label or color of desktop icon.
+  - lsbtn / btns                       : List all desktop icons and paths.
+  - setbg <color>                      : Change desktop background color.
+
+- Program Execution:
+  - edit <file>        : Open file in Super Editor.
+  - run / exec <file>  : Execute a Lua script in a new tab.
+  - apps               : List all executable .lua applications across system.
+  - bfg                : Launch file manager.
+  - music              : Launch audio player.
