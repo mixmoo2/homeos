@@ -2,26 +2,42 @@ local repo = "https://raw.githubusercontent.com/mixmoo2/homeos/main/"
 
 local files = {
   "startup.lua",
-  "core/home.lua",
-  "core/super.lua",
-  "core/bfg.lua",
-  "core/calculator.lua",
-  "core/imagecopy.lua",
-  "core/play.lua",
-  "core/nbsTunes.lua",
-  "core/print.lua",
-  "core/betterblittle.lua",
+  "user_guide.txt",
+  "zreadmeMain.text",
+  "core/LICENSE",
+  "core/READMEplay.md",
   "core/ServerHost.lua",
   "core/WebViewer.lua",
+  "core/betterblittle.lua",
+  "core/bfg.lua",
+  "core/calculator.lua",
+  "core/home.lua",
+  "core/imagecopy.lua",
+  "core/nbsTunes.lua",
+  "core/play.lua",
+  "core/print.lua",
+  "core/super.lua",
+  "games/kimith.lua",
   "net/config.txt",
   "net/read_me_to_program_the_web.txt",
-  "net/share/tower.lua",
+  "net/modules/chat_module.lua",
   "net/share/chat.lua",
-  "net/share/host_info.txt",
-  "net/modules/chat_module.lua"
+  "net/share/tower.lua"
+}
+
+local dirs = {
+  "net/cookies",
+  "net/site_data/tower",
+  "user_files/calcprograms"
 }
 
 print("Installing HomeOS...")
+
+for _, dir in ipairs(dirs) do
+  if not fs.exists(dir) then
+    fs.makeDir(dir)
+  end
+end
 
 for _, path in ipairs(files) do
   print("Downloading: " .. path)
@@ -30,7 +46,7 @@ for _, path in ipairs(files) do
     fs.makeDir(dir)
   end
   
-  sleep(0.2)
+  sleep(0.1)
   local response = http.get(repo .. path)
   if response then
     local file = fs.open(path, "w")
